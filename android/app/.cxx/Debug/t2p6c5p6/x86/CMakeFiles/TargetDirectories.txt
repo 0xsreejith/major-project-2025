@@ -1,0 +1,2 @@
+/home/sree/Downloads/Untitled (2)/findmyadvocate/android/app/.cxx/Debug/t2p6c5p6/x86/CMakeFiles/edit_cache.dir
+/home/sree/Downloads/Untitled (2)/findmyadvocate/android/app/.cxx/Debug/t2p6c5p6/x86/CMakeFiles/rebuild_cache.dir

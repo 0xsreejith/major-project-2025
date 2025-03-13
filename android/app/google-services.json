@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1028712246527",
+    "project_id": "my-major-project-1",
+    "storage_bucket": "my-major-project-1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1028712246527:android:22028c240dd0738f6370ca",
+        "android_client_info": {
+          "package_name": "com.example.findmyadvocate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr0j9tlU9cl3BtAD9ukySX5WbUlYhkHVI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

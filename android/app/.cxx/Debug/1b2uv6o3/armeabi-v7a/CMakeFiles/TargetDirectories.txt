@@ -1,0 +1,2 @@
+/home/sree/Downloads/Untitled (2)/findmyadvocate/android/app/.cxx/Debug/1b2uv6o3/armeabi-v7a/CMakeFiles/edit_cache.dir
+/home/sree/Downloads/Untitled (2)/findmyadvocate/android/app/.cxx/Debug/1b2uv6o3/armeabi-v7a/CMakeFiles/rebuild_cache.dir
