@@ -1,159 +1,65 @@
+import 'package:findmyadvocate/controller/case_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
-class CaseTrackerPage extends StatefulWidget {
-  @override
-  _CaseTrackerPageState createState() => _CaseTrackerPageState();
-}
-
-class _CaseTrackerPageState extends State<CaseTrackerPage> {
-  final TextEditingController _searchController = TextEditingController();
-  String _caseNumber = "";
-  String _caseName = "";
-  String _caseStatus = "";
-  String _assignedAdvocate = "";
-  bool _isLoading = false;
-
-  void _searchCase() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    await Future.delayed(Duration(seconds: 2));
-
-    setState(() {
-      if (_searchController.text == '12345') {
-        _caseNumber = '12345';
-        _caseName = 'Sharma vs. State of Maharashtra';
-        _caseStatus = 'In Progress';
-        _assignedAdvocate = 'Adv. John Doe';
-      } else {
-        _caseNumber = '';
-        _caseName = 'No case found';
-        _caseStatus = '';
-        _assignedAdvocate = '';
-      }
-      _isLoading = false;
-    });
-  }
+class CaseManagementPage extends StatelessWidget {
+  final CaseController caseController = Get.put(CaseController());
 
   @override
   Widget build(BuildContext context) {
+    caseController.fetchCases(); // Fetch cases when page loads
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Case Tracker',
-            style: TextStyle(fontWeight: FontWeight.bold)),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: Text("Case Management")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Search Section
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
-                    spreadRadius: 2,
-                    blurRadius: 8,
-                    offset: Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    labelText: 'Search Case Number',
-                    border: InputBorder.none,
-                    prefixIcon: Icon(Icons.search, color: Colors.grey),
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.filter_list),
-                      onPressed: () {},
-                    ),
-                  ),
-                ),
-              ),
+            // ➕ Add Case Button
+            ElevatedButton(
+              onPressed: () => _showAddCaseDialog(context),
+              child: Text("Add Case"),
             ),
-            SizedBox(height: 24),
+            SizedBox(height: 20),
 
-            // Search Button
-            ElevatedButton.icon(
-              icon: Icon(Icons.search),
-              label: Text('Search Case',style: TextStyle(color: Colors.white),),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue[800],
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              onPressed: _searchCase,
-            ),
-            SizedBox(height: 24),
-
-            // Results Section
+            // 📌 Cases List
             Expanded(
-              child: _isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : _caseNumber.isEmpty
-                      ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.cases, size: 64, color: Colors.grey),
-                              SizedBox(height: 16),
-                              Text('No case found',
-                                  style: TextStyle(color: Colors.grey)),
-                            ],
-                          ),
-                        )
-                      : SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('Case Details',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold)),
-                              SizedBox(height: 16),
-                              _buildDetailCard(
-                                icon: Icons.numbers,
-                                title: 'Case Number',
-                                value: _caseNumber,
-                              ),
-                              _buildDetailCard(
-                                icon: Icons.description,
-                                title: 'Case Name',
-                                value: _caseName,
-                              ),
-                              _buildDetailCard(
-                                icon: Icons.timeline,
-                                title: 'Status',
-                                value: _caseStatus,
-                                statusColor: _getStatusColor(_caseStatus),
-                              ),
-                              _buildDetailCard(
-                                icon: Icons.person,
-                                title: 'Assigned Advocate',
-                                value: _assignedAdvocate,
-                              ),
-                              SizedBox(height: 16),
-                              ElevatedButton(
-                                onPressed: () {},
-                                child: Text('Contact Advocate'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green[800],
-                                  padding: EdgeInsets.symmetric(vertical: 16),
-                                  minimumSize: Size(double.infinity, 50),
-                                ),
-                              ),
-                            ],
-                          ),
+              child: Obx(() {
+                if (caseController.isLoading.value) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (caseController.casesList.isEmpty) {
+                  return Center(child: Text("No cases available"));
+                }
+                return ListView.builder(
+                  itemCount: caseController.casesList.length,
+                  itemBuilder: (context, index) {
+                    var caseData = caseController.casesList[index];
+                    return Card(
+                      elevation: 4,
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      child: ListTile(
+                        title: Text(caseData.caseTitle, style: TextStyle(fontWeight: FontWeight.bold)),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Court: ${caseData.courtName}"),
+                            Text("Status: ${caseData.status}"),
+                            Text("Next Hearing: ${caseData.hearingDate}"),
+                          ],
                         ),
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
+                            _confirmDelete(context, caseData.caseNumber);
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }),
             ),
           ],
         ),
@@ -161,67 +67,92 @@ class _CaseTrackerPageState extends State<CaseTrackerPage> {
     );
   }
 
-  Widget _buildDetailCard({
-    required IconData icon,
-    required String title,
-    required String value,
-    Color? statusColor,
-  }) {
-    return Card(
-      margin: EdgeInsets.only(bottom: 16),
-      elevation: 2,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            Icon(icon, color: Colors.blueGrey),
-            SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title,
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey)),
-                  SizedBox(height: 4),
-                  Row(
-                    children: [
-                      if (statusColor != null)
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: statusColor,
-                            shape: BoxShape.circle,
-                          ),
-                          margin: EdgeInsets.only(right: 8),
-                        ),
-                      Text(value,
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500)),
-                    ],
+  // 🔹 Show Add Case Dialog
+  void _showAddCaseDialog(BuildContext context) {
+    final TextEditingController caseTitleController = TextEditingController();
+    final TextEditingController courtNameController = TextEditingController();
+    final TextEditingController statusController = TextEditingController();
+    final TextEditingController detailsController = TextEditingController();
+    final RxString selectedDate = "".obs; // Observing the date
+
+    Get.defaultDialog(
+      title: "Add Case",
+      content: Column(
+        children: [
+          _buildTextField("Case Title", caseTitleController),
+          _buildTextField("Court Name", courtNameController),
+          _buildTextField("Status", statusController),
+          _buildTextField("Details", detailsController),
+
+          // 📅 Date Picker Field
+          Obx(() => TextField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: "Next Hearing Date",
+                  border: OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.calendar_today),
+                    onPressed: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(2100),
+                      );
+                      if (pickedDate != null) {
+                        selectedDate.value = DateFormat('yyyy-MM-dd').format(pickedDate);
+                      }
+                    },
                   ),
-                ],
-              ),
-            ),
-          ],
-        ),
+                ),
+                controller: TextEditingController(text: selectedDate.value),
+              )),
+        ],
       ),
+      confirm: ElevatedButton(
+        onPressed: () {
+          if (caseTitleController.text.isNotEmpty) {
+            caseController.addCase({
+              "caseTitle": caseTitleController.text,
+              "courtName": courtNameController.text,
+              "status": statusController.text,
+              "hearingDate": selectedDate.value, // Save selected date
+              "details": detailsController.text,
+            });
+            Get.back();
+          }
+        },
+        child: Text("Save"),
+      ),
+      cancel: TextButton(onPressed: () => Get.back(), child: Text("Cancel")),
     );
   }
 
-  Color _getStatusColor(String status) {
-    switch (status.toLowerCase()) {
-      case 'in progress':
-        return Colors.orange;
-      case 'closed':
-        return Colors.green;
-      case 'pending':
-        return Colors.red;
-      default:
-        return Colors.grey;
-    }
+  // 🔹 Confirm Delete Case
+  void _confirmDelete(BuildContext context, String caseId) {
+    Get.defaultDialog(
+      title: "Delete Case",
+      middleText: "Are you sure you want to delete this case?",
+      confirm: ElevatedButton(
+        onPressed: () {
+          caseController.deleteCase(caseId);
+          Get.back();
+        },
+        child: Text("Delete"),
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+      ),
+      cancel: TextButton(onPressed: () => Get.back(), child: Text("Cancel")),
+    );
+  }
+
+  // 🔹 Text Field Helper
+  Widget _buildTextField(String label, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(labelText: label, border: OutlineInputBorder()),
+      ),
+    );
   }
 }

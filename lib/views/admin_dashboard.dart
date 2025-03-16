@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:findmyadvocate/controller/auth_controller.dart';
+import 'package:findmyadvocate/views/add_court_hiring.dart';
+import 'package:findmyadvocate/views/case_management.dart';
 import 'package:findmyadvocate/views/create_legal_advice_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,7 +40,6 @@ class AdminDashboard extends StatelessWidget {
               children: [
                 _buildDashboardCard(
                   title: 'Total Advocates',
-                  // count: authController.advocatesList.length.toString(),
                   icon: Icons.people,
                   onTap: () => Get.toNamed('/all-advocates'),
                 ),
@@ -50,15 +51,29 @@ class AdminDashboard extends StatelessWidget {
                 _buildDashboardCard(
                   title: 'Legal Advice',
                   icon: Icons.gavel,
-                  onTap: (){
+                  onTap: () {
                     Get.to(() => CreateLegalAdviceScreen());
-                  }
+                  },
+                ),
+                _buildDashboardCard(
+                  title: 'Court Hirings', // New Card
+                  icon: Icons.business,
+                  onTap: () {
+                    Get.to(() =>
+                        AddCourtHiringView()); // Navigate to AddCourtHiringView
+                  },
+                ),
+                _buildDashboardCard(
+                  title: 'Case Info',
+                  icon: Icons.article,
+                  onTap: () {
+                    Get.to(() =>
+                        CaseManagementScreen()); // Navigate to case screen
+                  },
                 ),
               ],
             ),
             SizedBox(height: 20),
-
-          
           ],
         ),
       ),
@@ -92,7 +107,10 @@ class AdminDashboard extends StatelessWidget {
               if (count != null)
                 Text(
                   count,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue),
                 ),
             ],
           ),
@@ -101,4 +119,3 @@ class AdminDashboard extends StatelessWidget {
     );
   }
 }
-  
