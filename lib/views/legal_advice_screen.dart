@@ -8,6 +8,8 @@ import '../model/legal_advice_model.dart';
 class LegalAdviceListScreen extends StatelessWidget {
   final LegalAdviceController legalAdviceController = Get.put(LegalAdviceController());
 
+   LegalAdviceListScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

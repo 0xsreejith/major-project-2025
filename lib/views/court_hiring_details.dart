@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 class CourtHiringsView extends StatelessWidget {
   final CourtHiringController controller = Get.put(CourtHiringController());
 
+   CourtHiringsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

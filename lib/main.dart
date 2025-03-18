@@ -1,6 +1,7 @@
 import 'package:findmyadvocate/controller/auth_controller.dart';
 import 'package:findmyadvocate/controller/court_hiring_controller.dart';
 import 'package:findmyadvocate/views/admin_dashboard.dart';
+import 'package:findmyadvocate/views/admin_query_screen.dart';
 import 'package:findmyadvocate/views/advocate_details_page.dart';
 import 'package:findmyadvocate/views/all_advocates.dart';
 import 'package:findmyadvocate/views/case_tracker/case_tracker_page.dart';
@@ -23,11 +24,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   Get.put(AuthController()); // Initialize AuthController globally
- Get.put(CourtHiringController());
+  Get.put(CourtHiringController());
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -47,15 +50,13 @@ class MyApp extends StatelessWidget {
           name: '/advocate-details',
           page: () => AdvocateDetailScreen(advocate: Get.arguments),
         ),
-        GetPage(name: '/legalAdvice', page: ()=>LegalAdviceListScreen()),
-        GetPage(name: '/case-tracker', page: ()=>CaseTrackerPage()),
-        
-      GetPage(name: '/gemini-ai', page: ()=>ChatScreen()),
-      GetPage(name: '/add-court-hiring', page: () => AddCourtHiringView()),
-      GetPage(name: '/court-dates', page: () => UserCourtDatesView()),
+        GetPage(name: '/legalAdvice', page: () => LegalAdviceListScreen()),
+        GetPage(name: '/case-tracker', page: () => CaseTrackerPage()),
 
-
-        
+        GetPage(name: '/gemini-ai', page: () => ChatScreen()),
+        GetPage(name: '/add-court-hiring', page: () => AddCourtHiringView()),
+        GetPage(name: '/court-dates', page: () => UserCourtDatesView()),
+        GetPage(name: '/user-queries', page: () => AdminUserQueriesScreen())
       ],
     );
   }

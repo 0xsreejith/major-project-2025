@@ -4,6 +4,8 @@ import '../controller/advocate_controller.dart';
 import '../model/advocate_model.dart';
 
 class EditAdvocateScreen extends StatefulWidget {
+  const EditAdvocateScreen({super.key});
+
   @override
   _EditAdvocateScreenState createState() => _EditAdvocateScreenState();
 }
@@ -141,11 +143,11 @@ class _EditAdvocateScreenState extends State<EditAdvocateScreen> {
 
                 ElevatedButton(
                   onPressed: _saveChanges,
-                  child: Text("Save Changes"),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
+                  child: Text("Save Changes"),
                 ),
               ],
             ),

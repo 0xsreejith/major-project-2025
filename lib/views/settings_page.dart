@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 class SettingsPage extends StatelessWidget {
    final SettingsController controller = Get.put(SettingsController());
 
+   SettingsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

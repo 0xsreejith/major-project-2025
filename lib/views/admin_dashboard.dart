@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 class AdminDashboard extends StatelessWidget {
   final AuthController authController = Get.find<AuthController>();
 
-  AdminDashboard({Key? key}) : super(key: key);
+  AdminDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -69,6 +69,14 @@ class AdminDashboard extends StatelessWidget {
                   onTap: () {
                     Get.to(() =>
                         CaseManagementScreen()); // Navigate to case screen
+                  },
+                ),
+                _buildDashboardCard(
+                  title: 'User Queries',
+                  icon: Icons.message,
+                  onTap: () {
+                    Get.toNamed(
+                        '/user-queries'); // Navigate to User Queries page
                   },
                 ),
               ],

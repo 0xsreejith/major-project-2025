@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 class CaseManagementPage extends StatelessWidget {
   final CaseController caseController = Get.put(CaseController());
 
+   CaseManagementPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     caseController.fetchCases(); // Fetch cases when page loads
@@ -138,8 +140,8 @@ class CaseManagementPage extends StatelessWidget {
           caseController.deleteCase(caseId);
           Get.back();
         },
-        child: Text("Delete"),
         style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+        child: Text("Delete"),
       ),
       cancel: TextButton(onPressed: () => Get.back(), child: Text("Cancel")),
     );

@@ -5,10 +5,10 @@ import 'package:get/get.dart';
 import '../controller/court_hiring_controller.dart';
 
 class AddCourtHiringView extends StatefulWidget {
-  final String? hiringId; // If null, we are adding a new hiring
+  final String? hiringId;
   final Map<String, dynamic>? existingData;
 
-  AddCourtHiringView({this.hiringId, this.existingData});
+  const AddCourtHiringView({super.key, this.hiringId, this.existingData});
 
   @override
   _AddCourtHiringViewState createState() => _AddCourtHiringViewState();
@@ -16,7 +16,7 @@ class AddCourtHiringView extends StatefulWidget {
 
 class _AddCourtHiringViewState extends State<AddCourtHiringView> {
   final CourtHiringController courtHiringController = Get.find();
-  
+
   final TextEditingController lawyerController = TextEditingController();
   final TextEditingController caseDetailsController = TextEditingController();
   final TextEditingController timeController = TextEditingController();
@@ -40,7 +40,7 @@ class _AddCourtHiringViewState extends State<AddCourtHiringView> {
       firstDate: DateTime.now(),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != selectedDate) {
+    if (picked != null) {
       setState(() {
         selectedDate = picked;
       });
@@ -60,8 +60,11 @@ class _AddCourtHiringViewState extends State<AddCourtHiringView> {
   }
 
   void saveHiring() async {
-    if (lawyerController.text.isEmpty || caseDetailsController.text.isEmpty || timeController.text.isEmpty) {
-      Get.snackbar("Error", "Please fill in all fields", backgroundColor: Colors.red, colorText: Colors.white);
+    if (lawyerController.text.isEmpty ||
+        caseDetailsController.text.isEmpty ||
+        timeController.text.isEmpty) {
+      Get.snackbar("Error", "Please fill in all fields",
+          backgroundColor: Colors.red, colorText: Colors.white);
       return;
     }
 
@@ -79,13 +82,17 @@ class _AddCourtHiringViewState extends State<AddCourtHiringView> {
       await courtHiringController.updateCourtHiring(widget.hiringId!, hiringData);
     }
 
-    Get.back(); // Close screen
+    Get.back();
+  }
+
+  void deleteHiring(String id) async {
+    await courtHiringController.deleteCourtHiring(id);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.hiringId == null ? "Add Court Hiring" : "Edit Court Hiring")),
+      appBar: AppBar(title: Text("Manage Court Hirings")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -121,12 +128,33 @@ class _AddCourtHiringViewState extends State<AddCourtHiringView> {
             SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF1A237E), // Deep Blue
+                backgroundColor: Color(0xFF1A237E),
                 padding: EdgeInsets.symmetric(vertical: 12),
                 textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               onPressed: saveHiring,
               child: Text(widget.hiringId == null ? "Add Hiring" : "Update Hiring"),
+            ),
+            SizedBox(height: 20),
+            Expanded(
+              child: Obx(() => ListView.builder(
+                    itemCount: courtHiringController.courtHirings.length,
+                    itemBuilder: (context, index) {
+                      var hiring = courtHiringController.courtHirings[index];
+                      return Card(
+                        elevation: 4,
+                        margin: EdgeInsets.symmetric(vertical: 8),
+                        child: ListTile(
+                          title: Text(hiring['lawyer_name']),
+                          subtitle: Text("Date: ${DateFormat.yMMMd().format((hiring['date'] as Timestamp).toDate())}\nTime: ${hiring['time']}"),
+                          trailing: IconButton(
+                            icon: Icon(Icons.delete, color: Colors.red),
+                            onPressed: () => deleteHiring(hiring['id']),
+                          ),
+                        ),
+                      );
+                    },
+                  )),
             ),
           ],
         ),

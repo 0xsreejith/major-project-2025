@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:findmyadvocate/controller/auth_controller.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({super.key});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();

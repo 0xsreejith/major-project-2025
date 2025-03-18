@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:findmyadvocate/views/widgets/top_component.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

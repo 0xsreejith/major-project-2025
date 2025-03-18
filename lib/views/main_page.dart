@@ -1,5 +1,6 @@
 import 'package:findmyadvocate/controller/auth_controller.dart';
 import 'package:findmyadvocate/views/drawer_pages/about.dart';
+import 'package:findmyadvocate/views/drawer_pages/contact_page.dart';
 import 'package:findmyadvocate/views/search_advocate.dart';
 import 'package:findmyadvocate/views/settings_page.dart';
 import 'package:findmyadvocate/views/user_home.dart';
@@ -80,7 +81,7 @@ class _MainPageState extends State<MainPage> {
               leading: Icon(Icons.contact_mail),
               title: Text('Contact Us'),
               onTap: () {
-                
+                Get.to(ContactPage());
               },
             ),
             ListTile(

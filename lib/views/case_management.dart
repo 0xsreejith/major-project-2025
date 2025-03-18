@@ -10,7 +10,9 @@ class CaseManagementScreen extends StatelessWidget {
   final TextEditingController hearingDateController = TextEditingController();
   final TextEditingController detailsController = TextEditingController();
 
-  String selectedStatus = "Pending"; // Default case status
+  String selectedStatus = "Pending";
+
+  CaseManagementScreen({super.key}); // Default case status
 
   void _showAddCaseDialog(BuildContext context, {String? caseId}) {
     if (caseId == null) {

@@ -6,6 +6,8 @@ import 'package:findmyadvocate/controller/auth_controller.dart';
 import 'package:findmyadvocate/model/advocate_model.dart';
 
 class SearchAdvocateScreen extends StatefulWidget {
+  const SearchAdvocateScreen({super.key});
+
   @override
   _SearchAdvocateScreenState createState() => _SearchAdvocateScreenState();
 }
@@ -156,7 +158,7 @@ class _SearchAdvocateScreenState extends State<SearchAdvocateScreen> {
                           ),
                           title: Text(advocate.name,
                               style: TextStyle(fontWeight: FontWeight.bold)),
-                          subtitle: Text('${advocate.specialty}',
+                          subtitle: Text(advocate.specialty,
                               style: TextStyle(color: Colors.grey[700])),
                           trailing: Icon(Icons.arrow_forward_ios,
                               color: Colors.indigo),

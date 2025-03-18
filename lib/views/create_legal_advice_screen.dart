@@ -10,6 +10,8 @@ class CreateLegalAdviceScreen extends StatelessWidget {
   final TextEditingController questionController = TextEditingController();
   final TextEditingController answerController = TextEditingController();
 
+  CreateLegalAdviceScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

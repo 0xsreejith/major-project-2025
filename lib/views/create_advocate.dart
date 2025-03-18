@@ -21,7 +21,7 @@ class CreateAdvocateScreen extends StatelessWidget {
   final RxString selectedSpecialty = 'Criminal Law'.obs;
   final RxBool isLoading = false.obs;
 
-  CreateAdvocateScreen({Key? key}) : super(key: key);
+  CreateAdvocateScreen({super.key});
 
   final List<String> specialties = [
     'Criminal Law',
@@ -77,37 +77,46 @@ class CreateAdvocateScreen extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton.icon(
                         onPressed: () async {
-                          isLoading.value = true;
-                          await authController.createAdvocate(
-                            email: emailController.text.trim(),
-                            name: nameController.text.trim(),
-                            specialty: selectedSpecialty.value,
-                            location: locationController.text.trim(),
-                            experience: experienceController.text.trim(),
-                            description: descriptionController.text.trim(),
-                            enrollmentNumber: enrollmentNumberController.text.trim(),
-                            mobileNumber: mobileNumberController.text.trim(),
-                            practicePlace: practicePlaceController.text.trim(),
-                            qualifications: qualificationsController.text.trim(),
-                            barCouncilNumber: barCouncilNumberController.text.trim(),
-                            imageUrl: imageUrlController.text.trim(),
-                          );
-                          isLoading.value = false;
-                          Get.dialog(
-                            AlertDialog(
-                              title: Text('Success!'),
-                              content: Text('Advocate created successfully!'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Get.back(); // Close dialog
-                                    Get.back(); // Navigate back
-                                  },
-                                  child: Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
+                          if (_validateFields()) {
+                            isLoading.value = true;
+                            await authController.createAdvocate(
+                              email: emailController.text.trim(),
+                              name: nameController.text.trim(),
+                              specialty: selectedSpecialty.value,
+                              location: locationController.text.trim(),
+                              experience: experienceController.text.trim(),
+                              description: descriptionController.text.trim(),
+                              enrollmentNumber: enrollmentNumberController.text.trim(),
+                              mobileNumber: mobileNumberController.text.trim(),
+                              practicePlace: practicePlaceController.text.trim(),
+                              qualifications: qualificationsController.text.trim(),
+                              barCouncilNumber: barCouncilNumberController.text.trim(),
+                              imageUrl: imageUrlController.text.trim(),
+                            );
+                            isLoading.value = false;
+                            Get.dialog(
+                              AlertDialog(
+                                title: Text('Success!'),
+                                content: Text('Advocate created successfully!'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.back(); // Close dialog
+                                      Get.back(); // Navigate back
+                                    },
+                                    child: Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            Get.snackbar(
+                              'Error',
+                              'Please fill in all required fields.',
+                              backgroundColor: Colors.redAccent,
+                              colorText: Colors.white,
+                            );
+                          }
                         },
                         icon: Icon(Icons.add),
                         label: Text('Create Advocate'),
@@ -138,5 +147,19 @@ class CreateAdvocateScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool _validateFields() {
+    return nameController.text.trim().isNotEmpty &&
+           emailController.text.trim().isNotEmpty &&
+           locationController.text.trim().isNotEmpty &&
+           experienceController.text.trim().isNotEmpty &&
+           descriptionController.text.trim().isNotEmpty &&
+           enrollmentNumberController.text.trim().isNotEmpty &&
+           mobileNumberController.text.trim().isNotEmpty &&
+           practicePlaceController.text.trim().isNotEmpty &&
+           qualificationsController.text.trim().isNotEmpty &&
+           barCouncilNumberController.text.trim().isNotEmpty &&
+           imageUrlController.text.trim().isNotEmpty;
   }
 }

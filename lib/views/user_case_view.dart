@@ -5,6 +5,8 @@ class CaseTrackerPage extends StatelessWidget {
   final CaseController caseController = Get.put(CaseController());
   final TextEditingController searchController = TextEditingController();
 
+  CaseTrackerPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

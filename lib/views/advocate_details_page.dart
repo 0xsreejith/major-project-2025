@@ -6,7 +6,7 @@ import 'package:findmyadvocate/model/advocate_model.dart';
 class AdvocateDetailScreen extends StatelessWidget {
   final AdvocateModel advocate;
 
-  const AdvocateDetailScreen({Key? key, required this.advocate}) : super(key: key);
+  const AdvocateDetailScreen({super.key, required this.advocate});
 
   @override
   Widget build(BuildContext context) {

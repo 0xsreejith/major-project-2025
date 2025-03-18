@@ -6,7 +6,7 @@ import '../model/legal_advice_model.dart';
 class LegalAdviceDetailScreen extends StatelessWidget {
   final LegalAdviceModel advice;
 
-  LegalAdviceDetailScreen({required this.advice});
+  const LegalAdviceDetailScreen({super.key, required this.advice});
 
   @override
   Widget build(BuildContext context) {

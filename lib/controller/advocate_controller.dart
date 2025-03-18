@@ -27,7 +27,7 @@
           .get();
 
       advocatesList.value = querySnapshot.docs
-          .map((doc) => AdvocateModel.fromMap(doc.data() as Map<String, dynamic>, doc.id))
+          .map((doc) => AdvocateModel.fromMap(doc.data(), doc.id))
           .toList();
     } catch (e) {
       print("Error fetching advocates: $e");

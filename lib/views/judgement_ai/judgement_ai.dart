@@ -103,7 +103,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DeepSeek Assistant'),
+        title: const Text('Judgement AI'),
         centerTitle: true,
       ),
       body: Column(
